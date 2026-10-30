@@ -2,12 +2,12 @@
 <html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>瑞士 x 意大利 | 国庆漫游指南</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>奥匈捷 | 冬日漫游指南</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -18,10 +18,14 @@
                         serif: ['"Noto Serif SC"', 'serif'],
                     },
                     colors: {
-                        cream: '#F9F8F6',
-                        sage: '#849C8A',
-                        clay: '#B0897A',
-                        ink: '#2C363F'
+                        zinc: {
+                            50: '#fafafa',
+                            100: '#f4f4f5',
+                            200: '#e4e4e7',
+                            300: '#d4d4d8',
+                            800: '#27272a',
+                            900: '#18181b',
+                        }
                     }
                 }
             }
@@ -29,292 +33,203 @@
     </script>
     <style>
         body {
-            background-color: #f3f4f6; /* 为PC端提供背景，突出中间的手机版型 */
-            color: #2C363F;
+            background-color: #e5e5e5;
+            color: #18181b;
         }
-        /* 隐藏横向滚动条但保持可滚动 */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+        /* 隐藏横向滚动条 */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 自定义复选框样式 */
+        .task-checkbox:checked + .task-text {
+            text-decoration: line-through;
+            color: #a1a1aa;
         }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+
+        /* 票务复选框及其他新增样式 */
+        .ticket-checkbox:checked + .ticket-text {
+            text-decoration: line-through;
+            color: #a1a1aa;
         }
-        /* 时间轴左侧连线 */
-        .timeline-line::before {
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .photo-gallery::-webkit-scrollbar { display: none; }
+        .photo-gallery { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 路线虚线 */
+        .route-line::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 19px;
+            width: 2px;
+            border-left: 2px dashed #d4d4d8;
+            z-index: 0;
+        }
+        .day-line::before {
             content: '';
             position: absolute;
             top: 24px;
             bottom: -24px;
             left: 23px;
             width: 2px;
-            background-color: #e5e7eb;
+            background-color: #e4e4e7;
             z-index: 0;
         }
-        .timeline-item:last-child .timeline-line::before {
-            display: none;
-        }
+        .timeline-item:last-child .day-line::before { display: none; }
     </style>
 </head>
 <body class="antialiased font-sans">
 
-    <!-- 模拟手机屏幕的主容器 -->
-    <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative overflow-x-hidden">
+    <!-- 移动端约束主容器 -->
+    <div class="max-w-[500px] mx-auto bg-white min-h-screen shadow-2xl relative overflow-x-hidden flex flex-col">
         
-        <!-- 1. 顶部栏 Header -->
-        <header class="pt-12 pb-6 px-6 sticky top-0 bg-white/90 backdrop-blur-md z-40 border-b border-gray-100">
-            <h1 class="text-2xl font-bold text-ink mb-1 tracking-tight">瑞士 / 意大利</h1>
-            <p class="text-sm font-medium text-gray-500 mb-1">09.24 - 10.06 · 13天</p>
-            <div class="flex items-center text-xs text-gray-400 font-medium tracking-wide">
-                <span>深圳</span>
-                <i data-lucide="chevron-right" class="w-3 h-3 mx-1"></i>
-                <span>瑞士</span>
-                <i data-lucide="chevron-right" class="w-3 h-3 mx-1"></i>
-                <span>罗马</span>
-                <i data-lucide="chevron-right" class="w-3 h-3 mx-1"></i>
-                <span>香港</span>
-            </div>
+        <!-- Header -->
+        <header class="pt-10 pb-4 px-6 bg-white z-50">
+            <div class="text-[10px] font-bold text-zinc-400 tracking-[0.2em] uppercase mb-1">Austria / Hungary / Czech Republic</div>
+            <h1 class="text-3xl font-black text-zinc-900 mb-2 tracking-tight">奥匈捷 圣诞冬日之旅</h1>
+            <p class="text-sm font-semibold text-zinc-500 mb-6">12月11日 - 12月20日 · 10天</p>
+            
+            <!-- Sticky Tabs -->
+            <nav class="sticky top-0 bg-white/90 backdrop-blur-md z-50 border-b border-zinc-100 -mx-6 px-6 py-3 flex justify-between items-center text-sm font-bold text-zinc-400">
+                <a href="#boarding" class="hover:text-zinc-900 transition-colors">航班</a>
+                <a href="#journey" class="hover:text-zinc-900 transition-colors">路线</a>
+                <a href="#itinerary" class="hover:text-zinc-900 transition-colors">行程</a>
+                <a href="#todo" class="hover:text-zinc-900 transition-colors">Todo</a>
+            </nav>
         </header>
 
-        <main class="py-6 space-y-8">
-            <!-- 2. 航班信息卡片 (横向滑动) -->
-            <section class="px-6">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">下一程航班</h2>
-                    <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">1 / 3</span>
-                </div>
-                <div class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar -mx-6 px-6">
-                    
-                    <!-- 卡片 1 -->
-                    <div class="min-w-[88%] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-5 rounded-3xl snap-center shrink-0 shadow-sm relative overflow-hidden">
-                        <div class="absolute -right-4 -top-4 opacity-10">
-                            <i data-lucide="plane" class="w-24 h-24 transform rotate-45"></i>
-                        </div>
-                        <div class="flex justify-between items-center mb-5 relative z-10">
-                            <div class="text-3xl font-black text-blue-900 font-serif">SZX</div>
-                            <div class="flex-1 px-4 flex flex-col items-center mt-1">
-                                <span class="text-[10px] font-bold text-blue-400 mb-1 bg-white px-2 py-0.5 rounded-full">经停 SIN</span>
-                                <div class="w-full border-t-[1.5px] border-dashed border-blue-300 relative">
-                                    <i data-lucide="plane" class="w-4 h-4 text-blue-400 absolute -top-[9px] left-1/2 -translate-x-1/2 bg-blue-50"></i>
-                                </div>
-                            </div>
-                            <div class="text-3xl font-black text-blue-900 font-serif">ZRH</div>
-                        </div>
-                        <div class="text-sm font-medium text-blue-800 mb-4 opacity-80">9/24 02:05 起飞</div>
-                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-3 flex justify-center items-center text-sm font-bold text-blue-600 shadow-sm">
-                            <i data-lucide="clock" class="w-4 h-4 mr-2"></i>
-                            <span id="flight-timer">距起飞 20天 08:31:00</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 2 (占位) -->
-                    <div class="min-w-[88%] bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-5 rounded-3xl snap-center shrink-0 flex flex-col justify-center items-center text-gray-400">
-                        <i data-lucide="plane-takeoff" class="w-8 h-8 mb-2"></i>
-                        <p class="text-sm font-medium">GVA -> FCO (10/01)</p>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- 3. 旅程路线总览 -->
-            <section class="px-6">
-                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">本次旅程</h2>
-                <div class="bg-gray-50/80 p-5 rounded-3xl border border-gray-100 text-sm font-semibold text-gray-700 leading-relaxed shadow-sm flex flex-wrap items-center gap-y-2 gap-x-1.5">
-                    <span>SZX</span> <i data-lucide="plane" class="w-3.5 h-3.5 text-gray-400"></i>
-                    <span>ZRH</span> <i data-lucide="car" class="w-3.5 h-3.5 text-gray-400"></i>
-                    <span>Spiez</span> <i data-lucide="car" class="w-3.5 h-3.5 text-gray-400"></i>
-                    <span>Grindelwald</span> <i data-lucide="train" class="w-3.5 h-3.5 text-gray-400"></i>
-                    <span>GVA</span> <i data-lucide="plane" class="w-3.5 h-3.5 text-gray-400"></i>
-                    <span>FCO</span> <i data-lucide="plane" class="w-3.5 h-3.5 text-gray-400"></i>
-                    <span>HKG</span>
-                </div>
-            </section>
-
-            <!-- 4. 每日行程时间轴 -->
-            <section class="px-6 pb-6">
-                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5">13 天行程</h2>
+        <main class="flex-1 pb-20">
+            
+            <!-- 1. BOARDING 航班行程 -->
+            <section id="boarding" class="pt-8 px-6 scroll-mt-20">
+                <h2 class="text-xs font-black text-zinc-300 uppercase tracking-widest mb-1">Boarding</h2>
+                <h3 class="text-xl font-black text-zinc-900 mb-4">航班行程</h3>
                 
-                <div class="space-y-0">
-                    
-                    <!-- Day 1 -->
-                    <div class="timeline-item relative pb-6 timeline-line">
-                        <div class="absolute left-[15px] top-1.5 w-4 h-4 bg-white border-[3px] border-gray-300 rounded-full z-10"></div>
-                        <div class="pl-12 cursor-pointer flex justify-between items-center group" onclick="toggleDay('day1')">
-                            <div>
-                                <h3 class="font-bold text-lg text-ink group-hover:text-sage transition-colors">Day 1</h3>
-                                <p class="text-sm text-gray-500 mt-0.5">深圳 <i data-lucide="arrow-right" class="inline w-3 h-3 mx-0.5"></i> 新加坡</p>
-                            </div>
-                            <i data-lucide="chevron-down" id="icon-day1" class="w-5 h-5 text-gray-300 transition-transform duration-300"></i>
+                <div class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar -mx-6 px-6">
+                    <!-- Ticket 1 -->
+                    <div class="min-w-[90%] bg-zinc-900 text-white p-6 rounded-[2rem] snap-center shrink-0 shadow-lg relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-5">
+                            <i data-lucide="plane" class="w-32 h-32 transform rotate-45"></i>
                         </div>
-                        <div id="content-day1" class="pl-12 mt-4 hidden overflow-hidden transition-all duration-300">
-                            <div class="bg-gray-50 rounded-2xl p-4 text-sm text-gray-600">
-                                晚上前往宝安机场集合，准备开启旅程。
+                        <div class="flex justify-between items-center mb-6 text-[10px] text-zinc-400 font-bold tracking-widest uppercase">
+                            <span>12月11日</span>
+                            <span>Flight 01 / 02</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-6 relative z-10">
+                            <div class="text-4xl font-black font-serif">SHE</div>
+                            <div class="flex-1 px-4 flex flex-col items-center">
+                                <span class="text-[10px] font-bold text-zinc-400 mb-2">经停 PVG</span>
+                                <div class="w-full border-t border-dashed border-zinc-600 relative">
+                                    <i data-lucide="plane" class="w-4 h-4 text-zinc-400 absolute -top-[9px] left-1/2 -translate-x-1/2 bg-zinc-900 px-1"></i>
+                                </div>
                             </div>
+                            <div class="text-4xl font-black font-serif">BUD</div>
+                        </div>
+                        <div class="flex justify-between text-xs font-medium text-zinc-400">
+                            <div>沈阳<br><span class="text-white text-sm">起飞</span></div>
+                            <div class="text-center">上海浦东<br><span class="text-white text-sm">转机</span></div>
+                            <div class="text-right">布达佩斯<br><span class="text-white text-sm">抵达</span></div>
                         </div>
                     </div>
 
-                    <!-- Day 2 (默认展开) -->
-                    <div class="timeline-item relative pb-6 timeline-line">
-                        <div class="absolute left-[15px] top-1.5 w-4 h-4 bg-white border-[3px] border-sage rounded-full z-10 shadow-[0_0_0_4px_rgba(132,156,138,0.1)]"></div>
-                        <div class="pl-12 cursor-pointer flex justify-between items-center group" onclick="toggleDay('day2')">
-                            <div>
-                                <h3 class="font-bold text-lg text-ink group-hover:text-sage transition-colors">Day 2</h3>
-                                <p class="text-sm text-gray-500 mt-0.5">苏黎世 <i data-lucide="arrow-right" class="inline w-3 h-3 mx-0.5"></i> 施皮茨</p>
-                            </div>
-                            <!-- 默认箭头朝上 (已展开) -->
-                            <i data-lucide="chevron-down" id="icon-day2" class="w-5 h-5 text-gray-300 transition-transform duration-300 rotate-180"></i>
+                    <!-- Ticket 2 -->
+                    <div class="min-w-[90%] bg-zinc-800 text-white p-6 rounded-[2rem] snap-center shrink-0 shadow-lg relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-5">
+                            <i data-lucide="plane" class="w-32 h-32 transform rotate-45"></i>
                         </div>
-                        <!-- 默认不带 hidden class -->
-                        <div id="content-day2" class="pl-12 mt-5 space-y-5 transition-all duration-300">
-                            
-                            <div class="relative flex gap-4">
-                                <div class="font-bold text-sm text-ink w-10 shrink-0 pt-0.5">08:15</div>
-                                <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-3.5 flex-1">
-                                    <div class="text-sm font-semibold text-gray-800 mb-1">抵达苏黎世机场 (ZRH)</div>
-                                    <div class="text-xs text-gray-500">办理入境手续，提取行李</div>
+                        <div class="flex justify-between items-center mb-6 text-[10px] text-zinc-400 font-bold tracking-widest uppercase">
+                            <span>12月19日</span>
+                            <span>Flight 02 / 02</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-6 relative z-10">
+                            <div class="text-4xl font-black font-serif">PRG</div>
+                            <div class="flex-1 px-4 flex flex-col items-center">
+                                <span class="text-[10px] font-bold text-zinc-400 mb-2">经停 PEK</span>
+                                <div class="w-full border-t border-dashed border-zinc-600 relative">
+                                    <i data-lucide="plane" class="w-4 h-4 text-zinc-400 absolute -top-[9px] left-1/2 -translate-x-1/2 bg-zinc-800 px-1"></i>
                                 </div>
                             </div>
-
-                            <div class="relative flex gap-4">
-                                <div class="font-bold text-sm text-ink w-10 shrink-0 pt-0.5">14:00</div>
-                                <div class="bg-gray-50 border border-gray-100 rounded-2xl p-3.5 flex-1 flex justify-between items-center shadow-sm">
-                                    <div>
-                                        <div class="text-sm font-semibold text-gray-800">Hertz 机场提车</div>
-                                        <div class="text-xs text-gray-500 mt-1">Car Rental Center, Level 1</div>
-                                    </div>
-                                    <button class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-sage hover:bg-sage hover:text-white transition-colors">
-                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="relative flex gap-4">
-                                <div class="font-bold text-sm text-ink w-10 shrink-0 pt-0.5">傍晚</div>
-                                <div class="bg-gray-50 border border-gray-100 rounded-2xl p-3.5 flex-1 flex justify-between items-center shadow-sm">
-                                    <div>
-                                        <div class="text-sm font-semibold text-gray-800">入住施皮茨湖景酒店</div>
-                                        <div class="text-xs text-gray-500 mt-1">Strandweg 1, 3700 Spiez</div>
-                                    </div>
-                                    <button class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-sage hover:bg-sage hover:text-white transition-colors">
-                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </div>
-
+                            <div class="text-4xl font-black font-serif">SHE</div>
+                        </div>
+                        <div class="flex justify-between text-xs font-medium text-zinc-400">
+                            <div>布拉格<br><span class="text-white text-sm">起飞</span></div>
+                            <div class="text-center">北京首都<br><span class="text-white text-sm">转机</span></div>
+                            <div class="text-right">沈阳<br><span class="text-white text-sm">抵达</span></div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Day 3 -->
-                    <div class="timeline-item relative pb-6 timeline-line">
-                        <div class="absolute left-[15px] top-1.5 w-4 h-4 bg-white border-[3px] border-gray-300 rounded-full z-10"></div>
-                        <div class="pl-12 cursor-pointer flex justify-between items-center group" onclick="toggleDay('day3')">
-                            <div>
-                                <h3 class="font-bold text-lg text-ink group-hover:text-sage transition-colors">Day 3</h3>
-                                <p class="text-sm text-gray-500 mt-0.5">少女峰一日游</p>
-                            </div>
-                            <i data-lucide="chevron-down" id="icon-day3" class="w-5 h-5 text-gray-300 transition-transform duration-300"></i>
-                        </div>
-                        <div id="content-day3" class="pl-12 mt-4 hidden transition-all duration-300">
-                            <div class="bg-sage/5 border border-sage/20 rounded-2xl p-4 flex flex-col gap-3">
-                                <div class="flex items-center gap-2 text-sm font-semibold text-ink">
-                                    <i data-lucide="mountain-snow" class="w-4 h-4 text-sage"></i> 少女峰登顶向导
-                                </div>
-                                <p class="text-xs text-gray-600 leading-relaxed">搭乘艾格快线缆车转乘齿轨列车前往欧洲之巅。请务必穿戴防风保暖衣物及墨镜。</p>
-                                <div class="flex gap-2 mt-1">
-                                    <span class="inline-flex items-center px-2 py-1 bg-white rounded-md text-[10px] font-medium text-gray-600 border border-gray-100"><i data-lucide="map" class="w-3 h-3 mr-1"></i> 查看路线图</span>
-                                    <span class="inline-flex items-center px-2 py-1 bg-white rounded-md text-[10px] font-medium text-gray-600 border border-gray-100"><i data-lucide="ticket" class="w-3 h-3 mr-1"></i> 电子票据</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Countdown Timer -->
+                <div class="mt-2 bg-zinc-100 rounded-2xl p-4 flex flex-col items-center justify-center border border-zinc-200">
+                    <div class="text-xs font-bold text-zinc-500 mb-1">距离起飞还剩</div>
+                    <div id="flight-timer" class="text-2xl font-black text-zinc-900 font-mono tracking-wider">--天 --:--:--</div>
+                </div>
+            </section>
 
-                    <!-- Day 4-13 (占位) -->
-                    <div class="timeline-item relative pb-6 timeline-line">
-                        <div class="absolute left-[15px] top-1.5 w-4 h-4 bg-white border-[3px] border-gray-200 rounded-full z-10"></div>
-                        <div class="pl-12 flex justify-between items-center opacity-60">
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-500">Day 4-6</h3>
-                                <p class="text-sm text-gray-400 mt-0.5">格林德瓦 <i data-lucide="arrow-right" class="inline w-3 h-3 mx-0.5"></i> 日内瓦</p>
-                            </div>
-                        </div>
+            <!-- 2. THE WHOLE JOURNEY 本次旅程 -->
+            <section id="journey" class="pt-12 px-6 scroll-mt-10">
+                <h2 class="text-xs font-black text-zinc-300 uppercase tracking-widest mb-1">The Whole Journey</h2>
+                <h3 class="text-xl font-black text-zinc-900 mb-6">本次旅程</h3>
+                
+                <div class="relative w-full rounded-[2rem] overflow-hidden shadow-lg border border-zinc-200">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800" alt="Route Map Placeholder" class="w-full h-auto object-cover block">
+                    <div class="absolute bottom-4 right-4 bg-zinc-900/80 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+                        <i data-lucide="maximize" class="w-3 h-3"></i> 查看路线全貌
                     </div>
-                    
-                    <div class="timeline-item relative">
-                        <div class="absolute left-[15px] top-1.5 w-4 h-4 bg-white border-[3px] border-gray-200 rounded-full z-10"></div>
-                        <div class="pl-12 flex justify-between items-center opacity-60">
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-500">Day 7-13</h3>
-                                <p class="text-sm text-gray-400 mt-0.5">意大利深度游及返程</p>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </section>
 
+            <!-- 3. DAY BY DAY 每日行程 -->
+            <section id="itinerary" class="pt-12 px-6 scroll-mt-10">
+                <h2 class="text-xs font-black text-zinc-300 uppercase tracking-widest mb-1">Day by Day</h2>
+                <h3 class="text-xl font-black text-zinc-900 mb-6">每日行程 <span class="text-sm font-semibold text-zinc-400 ml-2">10 DAYS</span></h3>
+                
+                <div class="space-y-0" id="accordion-container">
+                    <!-- 动态生成的行程将插入到这里 -->
+                </div>
+            </section>
+
+            <!-- 4. BEFORE WE GO 旅行前准备 -->
+            <section id="todo" class="pt-12 px-6 scroll-mt-10">
+                <h2 class="text-xs font-black text-zinc-300 uppercase tracking-widest mb-1">Before We Go</h2>
+                <h3 class="text-xl font-black text-zinc-900 mb-6">旅行前准备</h3>
+                
+                <div class="bg-zinc-50 border border-zinc-200 p-5 rounded-[2rem]">
+                    <form id="todo-form" class="flex gap-2 mb-4">
+                        <input type="text" id="todo-input" placeholder="添加一项准备事项..." class="flex-1 bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-zinc-900 transition-colors">
+                        <button type="submit" class="bg-zinc-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-zinc-800 transition-colors">添加</button>
+                    </form>
+                    <ul id="todo-list" class="space-y-2">
+                        <!-- ToDo 列表动态插入 -->
+                    </ul>
                 </div>
             </section>
 
         </main>
-
-        <!-- 5. 底部自驾信息卡片 (固定悬浮于底部上方一点) -->
-        <div class="fixed bottom-6 left-0 right-0 max-w-md mx-auto px-6 z-40 pointer-events-none">
-            <div class="bg-gray-900/95 backdrop-blur-md rounded-full p-2 pr-5 flex items-center justify-between shadow-2xl border border-gray-700 pointer-events-auto">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white">
-                        <i data-lucide="car-front" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-bold text-white tracking-wide">Hertz, 5天, 四驱SUV</div>
-                        <div class="text-[10px] text-gray-400">瑞士段自驾 · 距取车 21天</div>
-                    </div>
-                </div>
-                <button class="bg-sage text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-opacity-90 transition-colors">
-                    提车单
-                </button>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // 初始化图标
         lucide.createIcons();
 
-        // 时间轴折叠/展开逻辑
-        function toggleDay(dayId) {
-            const content = document.getElementById(`content-${dayId}`);
-            const icon = document.getElementById(`icon-${dayId}`);
-            
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                // 使用 setTimeout 让 CSS transition 有效
-                setTimeout(() => {
-                    content.style.opacity = '1';
-                    content.style.transform = 'translateY(0)';
-                }, 10);
-                icon.classList.add('rotate-180');
-            } else {
-                content.classList.add('hidden');
-                icon.classList.remove('rotate-180');
-            }
-        }
-
-        // 模拟航班起飞倒计时逻辑
+        // --- 倒计时逻辑 ---
         function startCountdown() {
             const timerElement = document.getElementById('flight-timer');
             if(!timerElement) return;
 
-            // 设置一个目标时间：当前时间 + 20天 8小时 31分
-            let targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + 20);
-            targetDate.setHours(targetDate.getHours() + 8);
-            targetDate.setMinutes(targetDate.getMinutes() + 31);
-            targetDate.setSeconds(targetDate.getSeconds() + 45);
+            const targetDate = new Date('2026-12-11T20:00:00');
 
             setInterval(() => {
                 const now = new Date();
                 const distance = targetDate - now;
 
                 if (distance < 0) {
-                    timerElement.innerHTML = "已起飞";
+                    timerElement.innerHTML = "航班已起飞";
                     return;
                 }
 
@@ -323,12 +238,283 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                timerElement.innerHTML = `距起飞 ${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timerElement.innerHTML = `${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }, 1000);
         }
-        
-        // 启动倒计时
         startCountdown();
+
+        // --- 行程数据及渲染 ---
+        const itineraryData = [
+            {
+                day: 1, date: "12.11", title: "沈阳 ➡️ 布达佩斯",
+                content: [
+                    { time: "晚间", desc: "前往机场，经上海飞往布达佩斯。" }
+                ]
+            },
+            {
+                day: 2, date: "12.12", title: "布达佩斯",
+                description: "多瑙河畔的明珠，被誉为东欧巴黎。渔人堡拥有绝佳的观景视野，国会大厦则是新哥特式建筑的巅峰之作。",
+                photos: [
+                    "https://images.unsplash.com/photo-1549877452-9c387954fbc2?auto=format&fit=crop&w=400&q=80",
+                    "https://images.unsplash.com/photo-1514896791657-6101904a6015?auto=format&fit=crop&w=400&q=80"
+                ],
+                backup: "备选：弗洛斯马提广场圣诞集市 / 中央市场",
+                content: [
+                    { time: "上午", items: ["渔人堡", "布达城堡观景台"] },
+                    { time: "下午", items: ["塞切尼链桥"] },
+                    { time: "晚上", items: ["圣伊什特万圣殿圣诞集市"] }
+                ]
+            },
+            {
+                day: 3, date: "12.13", title: "布达佩斯 ➡️ 维也纳",
+                description: "乘坐跨国高铁穿越中欧平原，从布达佩斯的咖啡馆文化过渡到维也纳的皇家气派与绚丽灯光。",
+                tickets: ["购票: 跨国高铁 ÖBB/RegioJet", "门票: 沃蒂夫教堂“创世之光”灯光秀"],
+                photos: [
+                    "https://images.unsplash.com/photo-1609856878074-cf31e21ccb6b?auto=format&fit=crop&w=400&q=80",
+                    "https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=400&q=80"
+                ],
+                backup: "备选：国会大厦内部导览",
+                content: [
+                    { time: "上午", items: ["纽约咖啡馆", "玛格丽特桥"] },
+                    { time: "下午", desc: "乘坐高铁前往维也纳。" },
+                    { time: "晚上", items: ["市政厅集市", "沃蒂夫教堂灯光秀"] }
+                ]
+            },
+            {
+                day: 4, date: "12.14", title: "维也纳",
+                description: "哈布斯堡王朝的夏宫美泉宫尽显皇家奢华，而美景宫则藏有克里姆特的传世名作《吻》。",
+                tickets: ["门票: 美泉宫 Grand Tour", "门票: 上美景宫", "门票: 金色大厅/国家歌剧院音乐会"],
+                photos: [
+                    "https://images.unsplash.com/photo-1588714477688-61d00c3b8eb3?auto=format&fit=crop&w=400&q=80",
+                    "https://images.unsplash.com/photo-1603503348633-8c430e7df607?auto=format&fit=crop&w=400&q=80",
+                    "https://images.unsplash.com/photo-1596484552834-6a58f858f18f?auto=format&fit=crop&w=400&q=80"
+                ],
+                backup: "备选：爬坡去美泉宫凯旋门咖啡店俯瞰",
+                content: [
+                    { time: "上午", items: ["美泉宫"] },
+                    { time: "下午", items: ["卡尔教堂", "上美景宫"] },
+                    { time: "晚上", items: ["金色大厅", "国家歌剧院"] }
+                ]
+            },
+            {
+                day: 5, date: "12.15", title: "维也纳",
+                content: [
+                    { time: "上午", items: ["国会大厦", "英雄广场"] },
+                    { time: "下午", items: ["艺术史博物馆"] },
+                    { time: "晚上", items: ["中央咖啡馆"] }
+                ]
+            },
+            {
+                day: 6, date: "12.16", title: "维也纳 ➡️ 湖区",
+                description: "逃离都市喧嚣，深入奥地利阿尔卑斯山脉的湖区，体验纯粹的中欧林中湖畔与降临节童话。",
+                tickets: ["购票: ÖBB 维也纳至巴德伊舍"],
+                photos: [
+                    "https://images.unsplash.com/photo-1527622839257-2e1c93a0279d?auto=format&fit=crop&w=400&q=80"
+                ],
+                content: [
+                    { time: "上午", desc: "乘坐火车至巴德伊舍。" },
+                    { time: "下午", items: ["皇家甜品店", "圣沃尔夫冈"] },
+                    { time: "晚上", items: ["湖畔降临节集市"] }
+                ]
+            },
+            {
+                day: 7, date: "12.17", title: "湖区 ➡️ CK ➡️ 布拉格",
+                description: "穿梭于中世纪童话般的克鲁姆洛夫，红瓦白墙与伏尔塔瓦河交织，最终抵达千塔之城布拉格。",
+                tickets: ["车票: CK Shuttle 包车 / 或 RegioJet 大巴"],
+                backup: "备选：乘公交回巴德伊舍转共享小巴至CK",
+                photos: [
+                    "https://images.unsplash.com/photo-1591873099955-fbe0d64cc7f3?auto=format&fit=crop&w=400&q=80",
+                    "https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=400&q=80"
+                ],
+                content: [
+                    { time: "上午", items: ["CK小镇"] },
+                    { time: "下午", desc: "在CK小镇游玩后，乘车前往布拉格。" },
+                    { time: "晚上", items: ["老城广场圣诞集市"] }
+                ]
+            },
+            {
+                day: 8, date: "12.18", title: "布拉格",
+                description: "布拉格城堡高耸入云，圣维特大教堂彩绘玻璃夺人眼目；佩特任山是俯瞰红房顶绝美日落的最佳地点。",
+                tickets: ["门票: 布拉格城堡区", "车票: 佩特任山复古缆车"],
+                photos: [
+                    "https://images.unsplash.com/photo-1541883713028-11116c478a53?auto=format&fit=crop&w=400&q=80",
+                    "https://images.unsplash.com/photo-1513622470522-26c3c8a854bc?auto=format&fit=crop&w=400&q=80"
+                ],
+                content: [
+                    { time: "上午", items: ["圣维特大教堂", "黄金巷"] },
+                    { time: "下午", items: ["列侬墙", "佩特任山"] },
+                    { time: "晚上", items: ["查理大桥"], desc: "欣赏红房顶黄昏美景。" }
+                ]
+            },
+            {
+                day: 9, date: "12.19", title: "布拉格 ➡️ 北京",
+                content: [
+                    { time: "早晨", items: ["莱特纳公园"] },
+                    { time: "上午", items: ["市立图书馆"], desc: "老城 Citywalk。" },
+                    { time: "下午", desc: "赴机场回国。" }
+                ]
+            },
+            {
+                day: 10, date: "12.20", title: "北京 ➡️ 沈阳",
+                content: [
+                    { time: "下午", desc: "落地北京，转高铁回沈阳。" }
+                ]
+            }
+        ];
+
+        function renderItinerary() {
+            const container = document.getElementById('accordion-container');
+            container.innerHTML = '';
+            
+            itineraryData.forEach((day, index) => {
+                const isOpen = index === 0; // 默认展开第一天
+                
+                let contentHTML = '';
+                day.content.forEach(part => {
+                    let itemsHTML = '';
+                    if (part.items) {
+                        part.items.forEach(poi => {
+                            itemsHTML += `
+                                <div class="flex items-center gap-2 flex-wrap mb-1">
+                                    <span class="text-sm font-bold text-zinc-800">${poi}</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(poi)}" target="_blank" class="inline-flex items-center gap-0.5 text-[10px] font-bold text-zinc-500 bg-zinc-100 hover:bg-zinc-200 px-1.5 py-0.5 rounded transition-colors uppercase tracking-wider">
+                                        📍 Map
+                                    </a>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    contentHTML += `
+                        <div class="flex gap-4">
+                            <div class="w-10 shrink-0 text-xs font-bold text-zinc-400 pt-0.5">${part.time}</div>
+                            <div class="flex-1 flex flex-col">
+                                ${itemsHTML}
+                                ${part.desc ? `<div class="text-sm text-zinc-500 font-medium ${part.items ? 'mt-1' : ''}">${part.desc}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                let headerExtras = '';
+                
+                if (day.description) {
+                    headerExtras += `<p class="italic text-zinc-600 font-serif text-sm leading-relaxed mb-4 line-clamp-3">${day.description}</p>`;
+                }
+                
+                if (day.tickets && day.tickets.length > 0) {
+                    let ticketsList = day.tickets.map((ticket) => `
+                        <label class="flex items-center gap-2 cursor-pointer w-fit group">
+                            <input type="checkbox" class="w-4 h-4 accent-zinc-900 rounded ticket-checkbox shrink-0 cursor-pointer">
+                            <span class="text-sm font-bold text-zinc-800 group-hover:text-zinc-500 transition-colors ticket-text select-none">${ticket}</span>
+                        </label>
+                    `).join('');
+                    headerExtras += `<div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3 mb-4 flex flex-col gap-2">${ticketsList}</div>`;
+                }
+
+                if (day.photos && day.photos.length > 0) {
+                    let photosList = day.photos.map(src => `
+                        <img src="${src}" alt="photo" class="w-32 h-24 object-cover rounded-[8px] shrink-0 shadow-sm border border-zinc-200 snap-center">
+                    `).join('');
+                    headerExtras += `<div class="flex overflow-x-auto gap-3 pb-4 mb-2 photo-gallery snap-x snap-mandatory"><div class="flex gap-3 px-1">${photosList}</div></div>`;
+                }
+
+                let backupHTML = '';
+                if (day.backup) {
+                    backupHTML = `<div class="mt-4 pt-3 border-t border-dashed border-zinc-200 text-[11px] text-zinc-500 font-medium">✨ ${day.backup}</div>`;
+                }
+
+                const html = `
+                    <div class="timeline-item relative pb-6 day-line">
+                        <div class="absolute left-[15px] top-1.5 w-4 h-4 bg-white border-[4px] ${isOpen ? 'border-zinc-900' : 'border-zinc-300'} rounded-full z-10 transition-colors" id="dot-day${day.day}"></div>
+                        <div class="pl-12 cursor-pointer flex justify-between items-center group" onclick="toggleDay(${day.day})">
+                            <div>
+                                <h3 class="font-black text-lg text-zinc-900">DAY ${day.day.toString().padStart(2, '0')} <span class="text-zinc-400 text-sm ml-2 font-semibold">${day.date}</span></h3>
+                                <p class="text-sm font-semibold text-zinc-500 mt-0.5">${day.title}</p>
+                            </div>
+                            <i data-lucide="chevron-down" id="icon-day${day.day}" class="w-5 h-5 text-zinc-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}"></i>
+                        </div>
+                        <div id="content-day${day.day}" class="pl-12 mt-4 space-y-4 transition-all duration-300 origin-top ${isOpen ? 'opacity-100 scale-y-100 h-auto' : 'opacity-0 scale-y-0 h-0 overflow-hidden'}">
+                            <div class="bg-white border border-zinc-100 shadow-sm rounded-[1.5rem] p-5 relative overflow-hidden">
+                                ${headerExtras}
+                                <div class="space-y-5 mt-2">
+                                    ${contentHTML}
+                                </div>
+                                ${backupHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+            lucide.createIcons();
+        }
+
+        window.toggleDay = function(dayId) {
+            const content = document.getElementById(`content-day${dayId}`);
+            const icon = document.getElementById(`icon-day${dayId}`);
+            const dot = document.getElementById(`dot-day${dayId}`);
+            
+            if (content.classList.contains('h-0')) {
+                content.classList.remove('h-0', 'opacity-0', 'scale-y-0', 'overflow-hidden');
+                content.classList.add('opacity-100', 'scale-y-100', 'h-auto');
+                icon.classList.add('rotate-180');
+                dot.classList.remove('border-zinc-300');
+                dot.classList.add('border-zinc-900');
+            } else {
+                content.classList.add('h-0', 'opacity-0', 'scale-y-0', 'overflow-hidden');
+                content.classList.remove('opacity-100', 'scale-y-100', 'h-auto');
+                icon.classList.remove('rotate-180');
+                dot.classList.add('border-zinc-300');
+                dot.classList.remove('border-zinc-900');
+            }
+        };
+
+        renderItinerary();
+
+        // --- To-Do List 逻辑 ---
+        let todos = [
+            { id: 1, text: '浓汤宝 / 咖喱块', done: false },
+            { id: 2, text: '护照签证', done: false },
+            { id: 3, text: '打印行程单与机酒确认单', done: false },
+        ];
+
+        const todoList = document.getElementById('todo-list');
+        const todoForm = document.getElementById('todo-form');
+        const todoInput = document.getElementById('todo-input');
+
+        function renderTodos() {
+            todoList.innerHTML = '';
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center gap-3 p-3 bg-white border border-zinc-100 rounded-xl shadow-sm hover:shadow-md transition-shadow';
+                li.innerHTML = `
+                    <input type="checkbox" id="todo-${todo.id}" class="task-checkbox w-5 h-5 accent-zinc-900 rounded cursor-pointer" ${todo.done ? 'checked' : ''} onchange="toggleTodo(${todo.id})">
+                    <label for="todo-${todo.id}" class="task-text flex-1 text-sm font-semibold text-zinc-700 cursor-pointer select-none transition-colors">${todo.text}</label>
+                `;
+                todoList.appendChild(li);
+            });
+        }
+
+        window.toggleTodo = function(id) {
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                todo.done = !todo.done;
+                renderTodos();
+            }
+        };
+
+        todoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = todoInput.value.trim();
+            if (text) {
+                todos.push({ id: Date.now(), text, done: false });
+                todoInput.value = '';
+                renderTodos();
+            }
+        });
+
+        renderTodos();
     </script>
 </body>
 </html>
